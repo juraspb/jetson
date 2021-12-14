@@ -74,7 +74,7 @@ int main(){
             //Canny(ggray,gimg,100,200);
             Mat img;
             Canny(ggray,img,100,200);
-            gimg.download(img);
+            //gimg.download(img);
             //putText(cap1img, txt, Point(40,40), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 2, LINE_AA);
 	          imshow("CAM1", img);
           }
