@@ -43,24 +43,26 @@ void VES249(string msg) {
 int main(){
     //thread th1(VES249, " threadMSG");
     namedWindow( "CAM1", WINDOW_NORMAL );
-    namedWindow( "CAM2", WINDOW_NORMAL );
+    //namedWindow( "CAM2", WINDOW_NORMAL );
     resizeWindow( "CAM1", 640, 480);
-    resizeWindow( "CAM2", 640, 480);
+    //resizeWindow( "CAM2", 640, 480);
     moveWindow( "CAM1", 0, 0);
-    moveWindow( "CAM2", 700, 0);
+    //moveWindow( "CAM2", 700, 0);
 
     string cam1_url = "rtsp://admin:pP@697469@192.168.1.102:554/Stream/Channel/101" ;
-    string cam2_url = "rtsp://user:9999@192.168.1.167:8557/PSIA/Streaming/channels/2?videoCodecType=H.264";
+    //string cam2_url = "rtsp://user:9999@192.168.1.167:8557/PSIA/Streaming/channels/2?videoCodecType=H.264";
     //string cam2_url = "rtsp://192.168.1.167:8555/PSIA/Streaming/channels/0?videoCodecType=MJPEG";
 
     VideoCapture cam1cap, cam2cap;
     int i=0;
     char key;
     cam1cap.open(cam1_url);
-    cam2cap.open(cam2_url);
+    //cam2cap.open(cam2_url);
     
-    if (cam1cap.isOpened()or cam2cap.isOpened()){
-        Mat cam1img,cam2img;
+    //if (cam1cap.isOpened()or cam2cap.isOpened()){
+        //Mat cam1img,cam2img;
+    if (cam1cap.isOpened()){
+        Mat cam1img;
         while (1) {	
           if (cam1cap.read(cam1img)) {
             GpuMat gimg,ggray; 
@@ -73,7 +75,7 @@ int main(){
             //putText(cap1img, txt, Point(40,40), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 2, LINE_AA);
 	          imshow("CAM1", img);
           }
-          
+/*          
           if (cam2cap.read(cam2img)) {
             Mat img,gray; 
             //putText(cap2img, txt, Point(40,40), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 2, LINE_AA); 
@@ -81,7 +83,7 @@ int main(){
             Canny(gray,img,100,200);
 	          imshow("CAM2", img);
           }
-          
+*/          
      	  key = waitKey(1);
           if (key=='q') break;
           if (key=='s') {
@@ -91,6 +93,7 @@ int main(){
             imwrite(ss.str(),cam1img);
             cout<<"i:"<<i<<" img path:"<<ss.str()<<endl;
           }
+/*
           if (key=='d') {
             stringstream ss;
             i++ ;
@@ -98,6 +101,7 @@ int main(){
             //imwrite(ss.str(),cam2img);
             cout<<"i:"<<i<<" img path:"<<ss.str()<<endl;
           }
+*/          
         }
     }
     //th1.join();
