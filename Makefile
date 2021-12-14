@@ -1,5 +1,5 @@
 CC = g++
-PROG = typhoon
+PROG = build/typhoon
 SRC = typhoon.cpp
 OPENCV = `pkg-config opencv4 --cflags --libs`
 
