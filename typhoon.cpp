@@ -65,12 +65,15 @@ int main(){
         Mat cam1img;
         while (1) {	
           if (cam1cap.read(cam1img)) {
-            GpuMat gimg,ggray; 
-            gimg.upload(cam1img);
+            Mat ggray; 
+            //GpuMat gimg,ggray; 
+            //gimg.upload(cam1img);
             //Sobel(cam1img,img,CV_32F,1,1);
-            cvtColor(gimg, ggray, COLOR_BGR2GRAY);
-            Canny(ggray,gimg,100,200);
+            //cvtColor(gimg, ggray, COLOR_BGR2GRAY);
+            cvtColor(cam1img, ggray, COLOR_BGR2GRAY);
+            //Canny(ggray,gimg,100,200);
             Mat img;
+            Canny(ggray,img,100,200);
             gimg.download(img);
             //putText(cap1img, txt, Point(40,40), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 2, LINE_AA);
 	          imshow("CAM1", img);
