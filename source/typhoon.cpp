@@ -64,24 +64,19 @@ int main(){
         //Mat cam1img,cam2img;
     if (cam1cap.isOpened()){
         Mat cam1img;
+        GpuMat img_gpu,gray_gpu,edged_gpu;
+        Ptr<CannyEdgeDetector> cannyFilter = createCannyEdgeDetector(50, 100);
+        Ptr<Filter> gaussianFilter = createGaussianFilter(gray_gpu.type(),gray_gpu.type(),cv::Size(7, 7),0);
+        
         while (1) {	
           if (cam1cap.read(cam1img)) {
-            //Mat ggray; 
             Mat img;
-            GpuMat gimg,ggray;
             auto start = std::chrono::high_resolution_clock::now(); 
-            gimg.upload(cam1img);
-            //Sobel(cam1img,img,CV_32F,1,1);
-            cuda::cvtColor(gimg, ggray, COLOR_BGR2GRAY);
-            Ptr<Filter> gaussianFilter = createGaussianFilter(ggray.type(),ggray.type(),cv::Size(7, 7),0);
-            gaussianFilter->apply(ggray, ggray);
-            GpuMat edgedImage_gpu;
-            Ptr<CannyEdgeDetector> cannyFilter = createCannyEdgeDetector(50, 100);
-            cannyFilter->detect(ggray, edgedImage_gpu);
-            //cvtColor(cam1img, ggray, COLOR_BGR2GRAY);
-            //Canny(ggray,gimg,100,200);
-            //Canny(ggray,img,100,200);
-            edgedImage_gpu.download(img);
+            img_gpu.upload(cam1img);
+            cuda::cvtColor(img_gpu, gray_gpu, COLOR_BGR2GRAY);
+            gaussianFilter->apply(gray_gpu, gray_gpu);
+            cannyFilter->detect(gray_gpu, edged_gpu);
+            edged_gpu.download(img);
             auto finish = std::chrono::high_resolution_clock::now(); 
             std::chrono::duration<double> elapsed_time = finish - start;
             std::cout << "Execute Time: " << elapsed_time.count() * 1000 << " msecs" << "\n" << std::endl;
@@ -96,6 +91,12 @@ int main(){
             Canny(gray,img,100,200);
 	          imshow("CAM2", img);
           }
+
+            //Sobel(cam1img,img,CV_32F,1,1);
+            //cvtColor(cam1img, ggray, COLOR_BGR2GRAY);
+            //Canny(ggray,img,100,200);
+
+
 */          
      	  key = waitKey(1);
           if (key=='q') break;
