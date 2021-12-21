@@ -66,18 +66,18 @@ int main(){
         Mat cam1img;
         GpuMat img_gpu,gray_gpu,edged_gpu;
         Ptr<CannyEdgeDetector> cannyFilter = createCannyEdgeDetector(50, 100);
-        Ptr<Filter> gaussianFilter = createGaussianFilter(gray_gpu.type(),gray_gpu.type(),cv::Size(7, 7),0);
+        Ptr<Filter> gaussianFilter = createGaussianFilter(gray_gpu.type(),gray_gpu.type(),Size(7, 7),0);
         
         while (1) {	
           if (cam1cap.read(cam1img)) {
             Mat img;
-            auto start = std::chrono::high_resolution_clock::now(); 
             img_gpu.upload(cam1img);
+            auto start = std::chrono::high_resolution_clock::now(); 
             cuda::cvtColor(img_gpu, gray_gpu, COLOR_BGR2GRAY);
             gaussianFilter->apply(gray_gpu, gray_gpu);
             cannyFilter->detect(gray_gpu, edged_gpu);
-            edged_gpu.download(img);
             auto finish = std::chrono::high_resolution_clock::now(); 
+            edged_gpu.download(img);
             std::chrono::duration<double> elapsed_time = finish - start;
             std::cout << "Execute Time: " << elapsed_time.count() * 1000 << " msecs" << "\n" << std::endl;
             putText(img, txt, Point(40,40), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 2, LINE_AA);
